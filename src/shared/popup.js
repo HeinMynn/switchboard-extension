@@ -21,7 +21,7 @@ async function run(work) {
   document.querySelectorAll('button, input, select').forEach(b => b.disabled = true);
   document.body.setAttribute('aria-busy', 'true');
   try { await work(); } catch (error) { status(error.message, true); }
-  finally { busy = false; document.querySelectorAll('button, input, select').forEach(b => b.disabled = false); document.body.removeAttribute('aria-busy'); }
+  finally { busy = false; document.querySelectorAll('button, input, select').forEach(b => { if (!b.dataset.locked) b.disabled = false; }); document.body.removeAttribute('aria-busy'); }
 }
 function savedTime(timestamp) {
   if (!timestamp) return 'Sign in, then save your login';
@@ -40,7 +40,7 @@ function actionButton(text, action, account, primary = false) {
     status(action === 'switch' ? `Switching to ${account.name}…` : 'Working…');
     const data = await send(action, { id: account.id, openAfter: ['switch', 'restore'].includes(action), refreshTabs: !firefox });
     render(data);
-    status(data.notice || (['switch', 'restore', 'open'].includes(action) ? `${account.name} opened. Check the account shown on the website.` : 'Saved account removed.'));
+    status(data.notice || (['switch', 'restore', 'open'].includes(action) ? `${account.name} opened. Check the account shown on the website.` : action === 'save' ? 'Login saved on this device.' : 'Saved account removed.'));
   })); return b;
 }
 function renderAccounts() {
@@ -65,7 +65,10 @@ function renderAccounts() {
     const meta = document.createElement('small'); meta.textContent = firefox ? 'Separate container' : savedTime(a.savedAt);
     if (a.savedAt) meta.title = new Date(a.savedAt).toLocaleString();
     copy.append(name, meta);
-    head.append(avatar, copy, actionButton(firefox || active ? 'Open' : 'Switch & refresh', firefox || active ? 'open' : 'switch', a, true));
+    let btnText = firefox || active ? 'Open' : 'Switch & refresh';
+    let btnAction = firefox || active ? 'open' : 'switch';
+    if (!firefox && active && !a.count) { btnText = 'Save account'; btnAction = 'save'; }
+    head.append(avatar, copy, actionButton(btnText, btnAction, a, true));
     const more = document.createElement('details'); const summary = document.createElement('summary'); summary.textContent = 'Manage account';
     const row = document.createElement('div'); row.className = 'row';
     if (!firefox && active && a.count) row.append(actionButton('Restore saved login', 'restore', a));
@@ -87,6 +90,13 @@ function renderAccounts() {
     });
     controls.append(save, cancel); form.append(input, controls);
     const exportButton = document.createElement('button'); exportButton.textContent = 'Export cookies';
+    const exportWarning = document.createElement('p');
+    if (!firefox && !a.count) {
+      exportButton.disabled = true;
+      exportButton.dataset.locked = 'true';
+      exportWarning.className = 'hint warning-text';
+      exportWarning.textContent = 'Save account first to export the cookies.';
+    }
     const exportForm = document.createElement('form'); exportForm.className = 'rename-form'; exportForm.hidden = true;
     const exportNote = document.createElement('p'); exportNote.className = 'hint';
     exportNote.textContent = (firefox ? 'Exports this website’s cookies from this account’s container.' : 'Exports this account’s last saved cookies. Use Save again first for the latest login.') + ' Both formats contain JSON. Keep the file private: cookies can grant access to your account.';
@@ -114,7 +124,10 @@ function renderAccounts() {
     });
     const exportActions = document.createElement('div'); exportActions.className = 'row'; exportActions.append(download, exportCancel);
     exportForm.append(exportNote, format, exportActions);
-    row.append(rename, exportButton, actionButton('Forget account', 'forget', a)); more.append(summary, row, form, exportForm);
+    row.append(rename, exportButton, actionButton('Forget account', 'forget', a)); 
+    more.append(summary, row);
+    if (!firefox && !a.count) more.append(exportWarning);
+    more.append(form, exportForm);
     card.append(head, more); $('accounts').append(card);
   }
 }
@@ -139,7 +152,7 @@ function render(data) {
   $('save-panel').hidden = firefox || !active;
   $('save-heading').textContent = active?.savedAt ? 'Keep this login up to date' : 'Finish setting up your account';
   $('save-hint').textContent = active?.savedAt ? 'Save again after signing in or changing your login.' : 'Sign in on the website, then save it here.';
-  $('save').textContent = active?.savedAt ? 'Save again' : 'Save login';
+  $('save').textContent = active?.savedAt ? 'Save again' : 'Save account';
   $('add-options').hidden = firefox || Boolean(active); updateAddForm();
 }
 function method() { return firefox || current.active ? 'new' : document.querySelector('input[name="method"]:checked').value; }
@@ -189,7 +202,7 @@ $('new-form').addEventListener('submit', event => {
   run(async () => {
     const data = await send(action, { name: $('name').value, openAfter: action === 'new', refreshTabs: !firefox });
     render(data); $('name').value = ''; $('new-form').hidden = true;
-    status(data.notice || (action === 'new' ? firefox ? 'Account opened in its own container. Sign in there.' : 'New account opened. Sign in, then click Save login here.' : 'Account saved.'));
+    status(data.notice || (action === 'new' ? firefox ? 'Account opened in its own container. Sign in there.' : 'New account opened. Sign in, then click Save account here.' : 'Account saved.'));
   });
 });
 $('open').addEventListener('click', () => run(async () => { await send('open'); status('Website opened.'); }));

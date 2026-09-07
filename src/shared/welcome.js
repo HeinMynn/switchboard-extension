@@ -4,7 +4,7 @@ const text = (id, value) => { document.getElementById(id).textContent = value; }
 text('browser-label', firefox ? 'Setup guide · Firefox' : 'Setup guide · Chrome');
 if (!firefox) {
   text('example-action', 'Switch & refresh');
-  text('step-three', 'Save your work in this website’s tabs; they will refresh automatically. Choose Add account → Create & open, sign in, then return to Switchboard and click Save login.');
+  text('step-three', 'Save your work in this website’s tabs; they will refresh automatically. Choose Add account → Create & open, sign in, then return to Switchboard and click Save account.');
   text('routine-text', 'Save unfinished work, then choose Switch & refresh beside the account you want. Your existing tabs return to their previous URLs with the selected login. Check the account shown on the website. Save again after login changes and before quitting Chrome.');
   text('restore-text', 'If the selected login needs restoring, save unfinished work and choose Manage account → Restore saved login. Existing tabs refresh automatically. If a switch is interrupted, use Recover previous session.');
 }
