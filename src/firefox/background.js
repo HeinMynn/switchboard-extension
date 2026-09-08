@@ -11,19 +11,19 @@ async function handle(message) {
   if (message.action === 'backup-export') return gatherBackup(browser, 'firefox');
   if (message.action === 'backup-restore') return restoreBackup(browser, 'firefox', message.payload);
   const { domain, url } = message.action === 'list' && !message.site ? { domain: null, url: null } : siteFromInput(message.site);
-  const { pockets = [], connectedSites = [] } = await browser.storage.local.get(['pockets', 'connectedSites']);
-  let sites = [...new Set([...connectedSites, ...pockets.map(p => p.domain)])].sort();
+  const { savedAccounts = [], connectedSites = [] } = await browser.storage.local.get(['savedAccounts', 'connectedSites']);
+  let sites = [...new Set([...connectedSites, ...savedAccounts.map(p => p.domain)])].sort();
   // Preserve older installations' websites even after their last account is forgotten.
   await browser.storage.local.set({ connectedSites: sites });
   const identities = await browser.contextualIdentities.query({});
   const existing = new Set(identities.map(i => i.cookieStoreId));
-  const accounts = pockets.filter(p => existing.has(p.id));
+  const accounts = savedAccounts.filter(p => existing.has(p.id));
   const target = accounts.find(a => a.id === message.id && a.domain === domain);
   if (message.action === 'remove-site') {
     const remaining = accounts.filter(a => a.domain !== domain);
     sites = sites.filter(site => site !== domain);
     const next = sites[0] || null;
-    await browser.storage.local.set({ pockets: remaining, connectedSites: sites, lastSite: next });
+    await browser.storage.local.set({ savedAccounts: remaining, connectedSites: sites, lastSite: next });
     return { mode: 'firefox', domain: next, sites, accounts: remaining.filter(a => a.domain === next), active: null, pending: null };
   }
   if (message.action === 'export') {
@@ -42,7 +42,7 @@ async function handle(message) {
     const colors = ['blue', 'orange', 'green', 'pink', 'purple', 'turquoise'];
     const identity = await browser.contextualIdentities.create({ name: `${name} · ${domain}`, color: colors[accounts.length % colors.length], icon: 'fingerprint' });
     accounts.push({ id: identity.cookieStoreId, name, domain });
-    try { await browser.storage.local.set({ pockets: accounts }); }
+    try { await browser.storage.local.set({ savedAccounts: accounts }); }
     catch (error) { await browser.contextualIdentities.remove(identity.cookieStoreId); throw error; }
     await browser.tabs.create({ url, cookieStoreId: identity.cookieStoreId });
   } else if (message.action === 'rename') {
@@ -52,7 +52,7 @@ async function handle(message) {
     const previous = identities.find(i => i.cookieStoreId === target.id).name;
     await browser.contextualIdentities.update(target.id, { name: `${name} · ${domain}` });
     target.name = name;
-    try { await browser.storage.local.set({ pockets: accounts }); }
+    try { await browser.storage.local.set({ savedAccounts: accounts }); }
     catch (error) {
       await browser.contextualIdentities.update(target.id, { name: previous });
       throw error;
@@ -64,7 +64,7 @@ async function handle(message) {
     if (!target) throw new Error('Account not found.');
     // Keep the Firefox container and its browser-owned login data intact.
     accounts.splice(accounts.indexOf(target), 1);
-    await browser.storage.local.set({ pockets: accounts });
+    await browser.storage.local.set({ savedAccounts: accounts });
   } else if (message.action !== 'list') throw new Error('Unknown action.');
   return { mode: 'firefox', domain, sites: [...new Set([...sites, ...accounts.map(a => a.domain)])].sort(), accounts: accounts.filter(a => a.domain === domain), active: null, pending: null };
 }

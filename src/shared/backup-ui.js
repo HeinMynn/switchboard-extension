@@ -45,12 +45,12 @@ async function run(work) {
   }
 }
 async function refreshSites() {
-  const s = await api.storage.local.get(['accountsState', 'pockets', 'connectedSites', 'backupRestoreJournal']);
+  const s = await api.storage.local.get(['accountsState', 'savedAccounts', 'connectedSites', 'backupRestoreJournal']);
   const sites = mode === 'chrome' ? Object.keys(s.accountsState?.sites || {})
-    : [...(s.connectedSites || []), ...(s.pockets || []).map(p => p.domain)];
+    : [...(s.connectedSites || []), ...(s.savedAccounts || []).map(p => p.domain)];
   exportOrigins = mode === 'firefox' ? ['http://*/*', 'https://*/*'] : [...new Set(sites.flatMap(origins))];
   recoveryOrigins = [...new Set((s.backupRestoreJournal?.liveCookies || []).flatMap(s => origins(s.domain)))];
-  const count = mode === 'chrome' ? Object.values(s.accountsState?.sites || {}).reduce((n, site) => n + site.accounts.length, 0) : (s.pockets || []).length;
+  const count = mode === 'chrome' ? Object.values(s.accountsState?.sites || {}).reduce((n, site) => n + site.accounts.length, 0) : (s.savedAccounts || []).length;
   $('current-summary').textContent = `${count} saved account${count === 1 ? '' : 's'} · ${new Set(sites).size} website${new Set(sites).size === 1 ? '' : 's'}`;
   $('recovery-panel').hidden = !s.backupRestoreJournal;
 }
@@ -85,7 +85,7 @@ $('decrypt-form').addEventListener('submit', event => {
   run(async () => {
     if (!file || !file.name.toLowerCase().endsWith('.swb') || file.size > 64 * 1024 * 1024) throw new Error('Choose a .swb file smaller than 64 MB.');
     pending = validateBackup(await decryptBackup(await file.text(), password), mode);
-    $('restore-summary').textContent = `${pending.pockets.length} accounts across ${pending.connectedSites.length} websites: ${pending.connectedSites.join(', ') || 'none'}.`;
+    $('restore-summary').textContent = `${pending.savedAccounts.length} accounts across ${pending.connectedSites.length} websites: ${pending.connectedSites.join(', ') || 'none'}.`;
     $('overwrite').checked = false; $('restore-review').hidden = false;
     $('restore-review').focus();
     $('status').textContent = 'Backup unlocked. Review the websites and confirm before restoring.';

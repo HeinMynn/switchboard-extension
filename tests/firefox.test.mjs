@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 
 test('Firefox creates and reopens isolated containers, without deleting native data on forget', async () => {
   let listener;
-  let pockets = [];
+  let savedAccounts = [];
   let connectedSites = [];
   const identities = [];
   const opened = [];
   let exportedFrom;
   globalThis.browser = {
     runtime: { id: 'test', getURL: p => `moz-extension://test/${p}`, onInstalled: { addListener: () => {} }, onMessage: { addListener: fn => { listener = fn; } } },
-    storage: { local: { get: async () => structuredClone({ pockets, connectedSites }), set: async data => {
-      if ('pockets' in data) pockets = structuredClone(data.pockets);
+    storage: { local: { get: async () => structuredClone({ savedAccounts, connectedSites }), set: async data => {
+      if ('savedAccounts' in data) savedAccounts = structuredClone(data.savedAccounts);
       if ('connectedSites' in data) connectedSites = structuredClone(data.connectedSites);
     } } },
     contextualIdentities: {
@@ -35,15 +35,15 @@ test('Firefox creates and reopens isolated containers, without deleting native d
   await send('open', { id }); assert.equal(opened[2].cookieStoreId, id);
   const duplicate = await send('new', { name: 'personal' }); assert.equal(duplicate.ok, false);
   const renamed = await send('rename', { id, name: 'Home' });
-  assert.equal(renamed.ok, true); assert.equal(pockets.find(a => a.id === id).name, 'Home');
+  assert.equal(renamed.ok, true); assert.equal(savedAccounts.find(a => a.id === id).name, 'Home');
   assert.equal(identities.find(i => i.cookieStoreId === id).name, 'Home · dola.com');
   const exported = await send('export', { id, format: 'json' });
   assert.equal(exported.ok, true); assert.equal(exportedFrom.storeId, id); assert.equal(exportedFrom.domain, 'dola.com');
   assert.equal(JSON.parse(exported.data.text)[0].value, 'synthetic');
-  await send('forget', { id }); assert.equal(pockets.length, 1); assert.equal(identities.length, 2);
+  await send('forget', { id }); assert.equal(savedAccounts.length, 1); assert.equal(identities.length, 2);
   const removed = await send('remove-site');
   assert.equal(removed.ok, true); assert.equal(removed.data.domain, null);
-  assert.equal(pockets.length, 0); assert.equal(identities.length, 2);
+  assert.equal(savedAccounts.length, 0); assert.equal(identities.length, 2);
   await send('connect', { site: 'example.com' });
   await send('connect', { site: 'example.org' });
   assert.deepEqual((await send('list')).data.sites, ['example.com', 'example.org']);
