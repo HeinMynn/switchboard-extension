@@ -43,8 +43,17 @@ We believe that your accounts, credentials, and cookies belong to you and you al
 * **Developers & QA Testers:** Test multiple user roles (Admin, Editor, Guest) on your local dev environments simultaneously without constantly clearing your cache.
 * **Everyday Users:** Keep your work life and personal life separate without the hassle of multiple browsers.
 
+**🔒 PERMISSIONS EXPLAINED**
+Transparency is our priority. Here is exactly why Switchboard needs its permissions:
+* **Cookies:** Required to read, clear, and restore session data when you switch accounts.
+* **Host Permissions (`<all_urls>`):** Required so you can save and switch accounts on any website you visit.
+* **Storage:** Required to securely save your session snapshots locally on your device's hard drive.
+* **Tabs:** Required so Switchboard can automatically refresh your current page to apply the newly selected account session.
+
 **⚠️ IMPORTANT TECHNICAL NOTES**
-Save unfinished page work before switching, as your active tabs will be reloaded. Switchboard's Chrome support is cookie-based; websites using other local storage methods (like IndexedDB) may not switch perfectly. Switchboard does not guarantee permanent authentication or protection from account restrictions, and is not affiliated with the websites you use.
+Save unfinished page work before switching, as your active tabs will be reloaded. Switchboard's Chrome support is cookie-based; websites using other local storage methods (like IndexedDB) may not switch perfectly.
+
+Take back control of your browser. Install Switchboard today and experience the fastest, safest, and most private way to manage multiple online accounts.
 
 ## Single purpose
 Let users locally organize and switch their own saved website login sessions.
