@@ -2,6 +2,14 @@
 
 Changes to Switchboard are listed here, newest first. Earlier entries summarize the version history recorded in the README; they do not imply a published store release or Git tag.
 
+## 1.0.1 — 2026-09-08
+
+### UI & UX Improvements
+- **Zero-State Auto-Open:** Automatically skip the "No websites yet" dropdown and present the active tab's domain ready for connection when you first use the extension.
+- **Inline Forms:** The "Add website" form now swaps in-place with the website dropdown, keeping the interface compact and eliminating vertical shifting.
+- **Header Actions:** Moved website panel actions to the header row, maximizing dropdown width to better display long domains.
+- **Refined Icons & Labels:** Upgraded to crisp SVG minus and plus icons for the "Remove" and "New" buttons. Renamed "Remove saved account" to simply "Remove" to save space.
+
 ## 1.0.0 — 2026-09-08
 
 - Add **Backup Data** and **Restore Data** with password-encrypted `.swb` files using native Web Crypto, PBKDF2-SHA-256 (600,000 iterations), and AES-256-GCM.
