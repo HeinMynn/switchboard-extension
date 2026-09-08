@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Switchboard</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+<header><img class="logo" src="icons/icon-48.png" width="38" height="38" alt=""><div><h1>Switchboard</h1><p id="mode"></p></div><span class="local">On this device</span></header>
+<main>
+  <section class="site-panel"><label for="websites">WEBSITE</label><div class="row"><select id="websites" aria-label="Saved websites"><option value="">No websites yet</option></select><button id="change-site" class="quiet">Add website</button></div>
+    <form id="site-form" hidden><label for="site">Website address</label><div class="row"><input id="site" value="" placeholder="example.com" spellcheck="false" aria-describedby="connect-hint" required><button id="connect">Connect</button></div><p id="connect-hint" class="hint">Connect this website to save and switch between accounts. Allow website access when your browser asks.</p></form>
+    <button id="remove-site" class="quiet">Remove website</button>
+  </section>
+  <p id="status" role="status" aria-live="polite" hidden></p><button id="recover" class="wide" hidden>Recover interrupted switch</button>
+  <div class="section-heading"><h2>Your accounts <span id="count"></span></h2><button id="refresh" class="quiet">Reload list</button></div>
+  <p id="notice" class="hint"></p>
+  <input id="search" type="search" placeholder="Find an account…" aria-label="Find an account" hidden><div id="accounts"></div>
+  <button id="add-account" class="wide dashed">+ Add account</button>
+  <form id="new-form" class="new-panel" hidden><div class="section-heading"><h2>Add an account</h2><button id="cancel-add" type="button" class="quiet">Cancel</button></div>
+    <label for="name">Give it a name</label><input id="name" maxlength="60" placeholder="Personal, Work, Side project" required>
+    <div id="add-options"><label class="choice"><input type="radio" name="method" value="save" checked>Save my current login</label><label class="choice"><input type="radio" name="method" value="new">Sign in to another account</label></div>
+    <p id="add-hint" class="hint"></p><button id="new" type="submit" class="primary wide">Save login</button>
+  </form>
+  <button id="open" class="wide quiet">Open website</button>
+  <details class="help"><summary>How it works & privacy</summary><p id="help"></p><p>Sites can expire or revoke logins. Switching does not hide your identity or prevent bans. Other Chrome login storage remains shared.</p><p>Everything stays on your device. Chrome saves sensitive cookies without additional encryption. Firefox keeps login data in native containers. Removing an account deletes its saved entry, not the website account or Firefox container. To log out, use the website, then remove its saved entry from Switchboard.</p></details>
+  <button id="welcome" class="wide quiet">Setup guide</button>
+  <a href="https://switchboard.aungheinmynn.dev/privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy policy</a>
+</main><script type="module" src="popup.js"></script>
+</body></html>

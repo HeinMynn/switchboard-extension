@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Welcome to Switchboard</title><link rel="icon" href="icons/icon-32.png"><link rel="stylesheet" href="welcome.css"></head>
+<body>
+  <header class="topbar"><a class="brand" href="#"><img src="icons/icon-48.png" width="36" height="36" alt="">Switchboard</a><span id="browser-label">Your account companion</span></header>
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">WELCOME TO SWITCHBOARD</p><h1>Your accounts.<br>One familiar place.</h1><p class="intro" id="intro">Keep your accounts organized and get back to the right login with a few clicks.</p><div class="actions"><button id="start">Open Switchboard <span aria-hidden="true">↗</span></button><a href="#setup">Show me how ↓</a></div><p id="start-status" role="status" aria-live="polite"></p><p class="privacy">Stored on your device · No uploads or analytics</p></div>
+      <aside class="preview" aria-label="Example account list"><div class="preview-top"><span>YOUR ACCOUNTS</span><span class="example">Example</span></div><h2>example.com</h2><div class="account selected"><span class="avatar">P</span><div><strong>Personal</strong><small>Last selected in Switchboard</small></div><span class="pill">Open</span></div><div class="account"><span class="avatar">W</span><div><strong>Work</strong><small>Ready when you are</small></div><span class="pill" id="example-action">Switch</span></div><p>Your names. Your accounts. Easy to find.</p></aside>
+    </section>
+    <section id="setup"><div class="section-title"><p class="eyebrow">GET STARTED</p><h2>Set up your accounts</h2></div>
+      <ol class="steps"><li><span class="number">01</span><h3>Pin Switchboard to your toolbar</h3><p id="step-one">Open your browser’s Extensions menu and pin Switchboard to the toolbar. Click the green switch icon to open it.</p></li><li><span class="number">02</span><h3 id="step-two-title">Save your first account</h3><p id="step-two">Open the website, then open Switchboard. Check the detected address, click Connect, and allow access if asked. Sign in normally, then choose Add account → Save my current login. Give it a name and click Save login.</p></li><li><span class="number">03</span><h3 id="step-three-title">Add another account</h3><p id="step-three">Save unfinished work. This website’s tabs will refresh automatically. Choose Add account → Start new login, sign in, then return to Switchboard and click Save login.</p></li></ol>
+    </section>
+    <section class="routine"><div><p class="eyebrow">EVERYDAY USE</p><h2 id="routine-title">Back to the right account.</h2></div><p id="routine-text">Save unfinished work, then choose Switch beside the account you want. Check the name shown on the website before using it. Click Click Save login again after signing in again and before quitting Chrome.</p></section>
+    <section class="tools"><h2>A few useful things to know</h2><div class="tool-grid">
+      <article><h3>Rename accounts and add websites</h3><p>Choose Manage account → Rename to change an account’s label. Use the website picker to move between sites, or Add website to connect another.</p></article>
+      <article><h3>Export a saved login</h3><p id="export-text">Choose Manage account → Export cookies, then .json or .txt. Both contain your last saved cookies in JSON format. For the latest cookies, select the account and click Save login again before exporting. Keep exports private: they can grant account access.</p></article>
+      <article><h3>Removing an account does not sign you out</h3><p id="remove-text">Remove saved account deletes the login saved in Switchboard. Remove website deletes all its saved entries. Current website cookies remain. To sign out, log out on the website, then remove the saved account from Switchboard.</p></article>
+      <article><h3 id="restore-title">Returning after a restart?</h3><p id="restore-text">If the selected login needs restoring, save unfinished work and choose Manage account → Restore saved login. If a switch is interrupted, use Recover interrupted switch.</p></article>
+    </div></section>
+    <aside class="note"><strong>About staying signed in</strong><p id="limits">Websites can expire or revoke sessions. Chrome switches cookies; other login storage remains shared, so compatibility varies by website. Switchboard does not hide your identity or guarantee protection from bans.</p></aside>
+  </main><footer>Switchboard <a href="https://switchboard.aungheinmynn.dev/privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy policy</a><span>Need this again? Open Setup guide in the extension.</span></footer>
+  <script type="module" src="welcome.js"></script>
+</body></html>
