@@ -156,6 +156,14 @@ function render(data) {
   if (!selectedSite) {
     const option = document.createElement('option'); option.textContent = 'No websites yet'; option.value = ''; $('websites').append(option);
     $('site').value = '';
+    $('site-form').hidden = false;
+    $('site-selector-row').hidden = true;
+    $('change-site').hidden = true;
+    $('cancel-site').hidden = true;
+  } else {
+    $('site-form').hidden = true;
+    $('site-selector-row').hidden = false;
+    $('change-site').hidden = false;
   }
   $('remove-site').hidden = !selectedSite;
   $('add-account').hidden = !selectedSite;
@@ -197,18 +205,20 @@ function updateConnectHint() {
 }
 $('site').addEventListener('input', updateConnectHint);
 $('change-site').addEventListener('click', () => { 
-  $('site-form').hidden = !$('site-form').hidden; 
-  $('remove-site').hidden = !$('site-form').hidden || !selectedSite;
-  if (!$('site-form').hidden) { 
-    $('site').value = detectedSite || selectedSite || ''; 
-    updateConnectHint(); 
-    $('site').focus(); 
-    $('site').select(); 
-  } 
+  $('site-form').hidden = false;
+  $('site-selector-row').hidden = true;
+  $('change-site').hidden = true;
+  $('cancel-site').hidden = false;
+  $('site').value = detectedSite || selectedSite || ''; 
+  updateConnectHint(); 
+  $('site').focus(); 
+  $('site').select(); 
 });
 $('cancel-site').addEventListener('click', () => { 
+  if (!selectedSite) return;
   $('site-form').hidden = true; 
-  $('remove-site').hidden = !selectedSite;
+  $('site-selector-row').hidden = false;
+  $('change-site').hidden = false;
   $('change-site').focus(); 
 });
 $('site-form').addEventListener('submit', event => {
