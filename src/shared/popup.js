@@ -155,11 +155,14 @@ function render(data) {
   $('websites').value = selectedSite;
   if (!selectedSite) {
     const option = document.createElement('option'); option.textContent = 'No websites yet'; option.value = ''; $('websites').append(option);
-    $('site').value = '';
+    $('site').value = detectedSite || '';
+    updateConnectHint();
     $('site-form').hidden = false;
     $('site-selector-row').hidden = true;
     $('change-site').hidden = true;
     $('cancel-site').hidden = true;
+    // Auto-focus after the browser has finished rendering the unhidden form
+    requestAnimationFrame(() => { $('site').focus(); $('site').select(); });
   } else {
     $('site-form').hidden = true;
     $('site-selector-row').hidden = false;
