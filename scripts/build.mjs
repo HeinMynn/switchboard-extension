@@ -3,7 +3,7 @@ import { createIcons } from './icons.mjs';
 const icons = Object.fromEntries([16, 32, 48, 128].map(size => [size, `icons/icon-${size}.png`]));
 const common = {
   manifest_version: 3, name: 'Switchboard', version: '1.0.0',
-  description: 'Named local account sessions: cookie switching in Chrome, containers in Firefox.',
+  description: 'A privacy-first, 100% local account and session manager. Easily save, switch, and manage multiple accounts for any website.',
   icons,
   action: { default_popup: 'popup.html', default_title: 'Switchboard', default_icon: icons },
   incognito: 'not_allowed'
