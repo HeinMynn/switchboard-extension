@@ -8,18 +8,45 @@ License: UNDECIDED — to be selected by the publisher.
 
 Name: Switchboard
 
-Summary: Keep website accounts in separate Firefox container tabs and export their cookies locally.
+Summary: A privacy-first, 100% local account manager. Seamlessly save, isolate, and manage multiple accounts for any website using Firefox Containers.
 
 ## Description
-Give each website account its own space with Switchboard.
+**Switchboard: The Privacy-First Account Manager**
 
-Create a named account container, sign in normally, and use Open to return. Firefox keeps each container's login storage separate, so different accounts can stay open together in the same window.
+Stop juggling multiple browsers or constantly logging in and out. Switchboard is a purely local account manager that lets you seamlessly run multiple accounts on any website at the exact same time.
 
-Organize websites, rename account entries, and export a selected website's container cookies as JSON or TXT containing JSON. A built-in setup guide explains the workflow.
+By utilizing Firefox's powerful native Container technology, Switchboard allows you to maintain multiple independent accounts for any website—perfectly isolated and ready to use side-by-side in the same window.
 
-Switchboard stores account labels, website choices, and container IDs locally. Firefox manages container cookie storage. Cookie export requires explicit website access and a user action. There are no analytics, advertisements, or automatic uploads. Exported cookies are sensitive credentials; protect downloaded files.
+**HOW IT WORKS**
+Instead of swapping cookies, Switchboard leverages Firefox Containers to keep your logins strictly separated. When you create a new account in Switchboard, it generates a secure, isolated container just for that session. You can have your personal, work, and client accounts all open in different tabs right next to each other, with zero overlap.
 
-Forget account and Remove website remove Switchboard entries while preserving Firefox's containers and live logins. Log out on the website to sign out. Websites can expire or revoke sessions. Containers do not hide your identity or guarantee protection from account restrictions.
+**CORE FEATURES**
+• **Isolated Account Containers:** Run multiple accounts for the exact same website simultaneously.
+• **Seamless Organization:** Keep track of all your active containers with a clean, intuitive interface.
+• **Export & Portability:** Need advanced control? Export a specific container's cookies as standard JSON files for backup or developer testing.
+• **Full Control:** Rename, remove, and manage your saved accounts instantly.
+
+**100% LOCAL & PRIVACY-FIRST**
+Your accounts, credentials, and cookies belong to you. Switchboard is built from the ground up to respect your privacy.
+• **Zero Tracking:** We do not track your usage, clicks, or browsing habits.
+• **No Cloud Sync:** Your data never leaves your machine. There are no centralized servers or remote databases.
+• **Completely Offline:** Switchboard operates entirely on your physical device.
+• **No Remote Code:** We do not inject or download external scripts.
+
+**WHO IS THIS FOR?**
+• **Freelancers & Agencies:** Keep client accounts strictly separated without mixing up sessions.
+• **Social Media Managers:** Keep multiple brand accounts open in adjacent tabs.
+• **Developers & QA:** Test multiple user roles simultaneously on local dev environments.
+• **Everyday Users:** Keep your work and personal life separate without the hassle of multiple browsers.
+
+**PERMISSIONS EXPLAINED**
+Transparency is our priority. Switchboard requires:
+• **Container Tabs:** To create and manage the isolated native containers for your accounts.
+• **Cookies:** To read and export session data for a specific container when requested.
+• **Storage:** To securely save your account labels and container IDs locally.
+• **Host Permissions:** To export cookie snapshots for the websites you choose.
+
+*(Note: Forget account and Remove website remove Switchboard entries while preserving Firefox's underlying containers and live logins. Switchboard does not guarantee permanent authentication or protection from account restrictions, and is not affiliated with the websites you use.)*
 
 ## Reviewer notes
 - This is the Firefox container version. Chrome's cookie-swapping engine is not shipped in this package.
