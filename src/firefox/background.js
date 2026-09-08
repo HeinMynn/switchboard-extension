@@ -1,20 +1,24 @@
 import { siteFromInput, accountName, origins } from './core.js';
 import { cookieExport } from './export.js';
 import { registerWelcome } from './onboarding.js';
+import { isGoogleSite, unsupportedGoogleMessage } from './google-site.js';
 registerWelcome(browser);
 let queue = Promise.resolve();
 async function handle(message) {
-  const { domain, url } = siteFromInput(message.site || 'dola.com');
-  const { pockets = [] } = await browser.storage.local.get('pockets');
+  const { domain, url } = message.action === 'list' && !message.site ? { domain: null, url: null } : siteFromInput(message.site);
+  const { pockets = [], connectedSites = [] } = await browser.storage.local.get(['pockets', 'connectedSites']);
+  let sites = [...new Set([...connectedSites, ...pockets.map(p => p.domain)])].sort();
+  // Preserve older installations' websites even after their last account is forgotten.
+  await browser.storage.local.set({ connectedSites: sites });
   const identities = await browser.contextualIdentities.query({});
   const existing = new Set(identities.map(i => i.cookieStoreId));
   const accounts = pockets.filter(p => existing.has(p.id));
   const target = accounts.find(a => a.id === message.id && a.domain === domain);
   if (message.action === 'remove-site') {
     const remaining = accounts.filter(a => a.domain !== domain);
-    const sites = [...new Set(remaining.map(a => a.domain))].sort();
+    sites = sites.filter(site => site !== domain);
     const next = sites[0] || null;
-    await browser.storage.local.set({ pockets: remaining, lastSite: next });
+    await browser.storage.local.set({ pockets: remaining, connectedSites: sites, lastSite: next });
     return { mode: 'firefox', domain: next, sites, accounts: remaining.filter(a => a.domain === next), active: null, pending: null };
   }
   if (message.action === 'export') {
@@ -23,7 +27,11 @@ async function handle(message) {
     const cookies = await browser.cookies.getAll({ domain, storeId: target.id, partitionKey: {} });
     return cookieExport(cookies, domain, target.name, message.format);
   }
-  if (message.action === 'new') {
+  if (message.action === 'connect') {
+    if (isGoogleSite(domain)) throw new Error(unsupportedGoogleMessage);
+    sites = [...new Set([...sites, domain])].sort();
+    await browser.storage.local.set({ connectedSites: sites, lastSite: domain });
+  } else if (message.action === 'new') {
     const name = accountName(message.name);
     if (accounts.some(a => a.domain === domain && a.name.toLowerCase() === name.toLowerCase())) throw new Error('Choose a different account name.');
     const colors = ['blue', 'orange', 'green', 'pink', 'purple', 'turquoise'];
@@ -53,7 +61,7 @@ async function handle(message) {
     accounts.splice(accounts.indexOf(target), 1);
     await browser.storage.local.set({ pockets: accounts });
   } else if (message.action !== 'list') throw new Error('Unknown action.');
-  return { mode: 'firefox', domain, sites: [...new Set(accounts.map(a => a.domain))], accounts: accounts.filter(a => a.domain === domain), active: null, pending: null };
+  return { mode: 'firefox', domain, sites: [...new Set([...sites, ...accounts.map(a => a.domain)])].sort(), accounts: accounts.filter(a => a.domain === domain), active: null, pending: null };
 }
 browser.runtime.onMessage.addListener((message, sender) => {
   if (sender.id !== browser.runtime.id || sender.url !== browser.runtime.getURL('popup.html')) return;

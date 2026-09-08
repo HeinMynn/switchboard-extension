@@ -6,7 +6,7 @@ export function siteFromInput(input) {
   }
   const domain = url.hostname.toLowerCase().replace(/^www\./, '').replace(/\.$/, '');
   if (!/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z][a-z0-9-]*$/.test(domain)) {
-    throw new Error('Enter a website such as dola.com.');
+    throw new Error('Enter a website such as example.com.');
   }
   return { domain, url: `https://${domain}/` };
 }

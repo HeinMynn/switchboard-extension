@@ -1,6 +1,6 @@
 # Switchboard
 
-An installable first version of a local account manager for **Chrome and Firefox**. Dola is the default website. No servers, analytics, account creation automation, or remote code.
+An installable first version of a local account manager for **Chrome and Firefox**. No website is selected by default. No servers, analytics, account creation automation, or remote code.
 
 ## What works differently
 
@@ -12,6 +12,8 @@ An installable first version of a local account manager for **Chrome and Firefox
 **Dola was reported working by the user with version 0.1.0.** The 0.2.0 UX update has been checked with synthetic accounts, not additional live Dola logins. Other websites remain unverified. Firefox containers provide the broader foundation; Chrome compatibility must be checked per website. Nothing here guarantees invisibility, protection from bans, or permanent authentication.
 
 ## Updating
+
+Current version: **0.6.0**. See [CHANGELOG.md](CHANGELOG.md) for version history and compatibility changes.
 
 Version **0.5.0** adds **Switch & refresh** in Chrome. Existing tabs for the website, including its subdomains in other normal windows, briefly show a local switching page and then return to their previous URLs with the selected account. Tab IDs and windows are preserved; private and unrelated tabs are untouched. If no matching tab exists, a new one opens. Save unfinished work first: navigating refreshes the page and loses unsaved input. Background site activity can still interfere, so live compatibility should be checked. Firefox retains its separate container behavior.
 
@@ -81,3 +83,9 @@ Before relying on a website, check two authorized accounts: save A, create/save 
 - [Chrome cookies API](https://developer.chrome.com/docs/extensions/reference/api/cookies)
 - [Firefox contextual identities](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/contextualIdentities)
 - [Dola terms](https://www.dola.com/legal/terms/en) and [privacy policy](https://www.dola.com/legal/privacy/en)
+
+## GitHub releases
+
+Push a version tag such as `v0.6.0` to trigger `.github/workflows/release.yml`. The workflow runs tests, builds both extensions, checks that the tag matches the package and manifest versions, and publishes Chrome and Firefox ZIPs with notes from `CHANGELOG.md`. Update the versions and changelog before tagging the next release.
+
+This publishes a GitHub release only. Browser store submission and Firefox signing remain separate steps.

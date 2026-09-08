@@ -1,5 +1,18 @@
 import { inScope } from './core.js';
 
+export function switchedTabs(tabs, domain) {
+  return tabs.map(tab => {
+    if (domain !== 'google.com') return tab;
+    try {
+      const url = new URL(tab.url);
+      // Gmail URLs can select an account slot or email from the outgoing session.
+      // Let the restored session choose its default inbox instead.
+      if (url.hostname === 'mail.google.com') return { ...tab, url: 'https://mail.google.com/' };
+    } catch { /* Preserve unrecognized URLs. */ }
+    return tab;
+  });
+}
+
 export async function siteTabs(api, domain) {
   const result = [];
   for (const tab of await api.tabs.query({})) {

@@ -1,6 +1,6 @@
 import { siteFromInput, inScope, origins, cookieUrl, cookieKey, toSetDetails, accountName } from './core.js';
 import { cookieExport } from './export.js';
-import { siteTabs, pauseTabs, resumeTabs } from './tab-refresh.js';
+import { siteTabs, pauseTabs, resumeTabs, switchedTabs } from './tab-refresh.js';
 
 export class ChromeAccounts {
   constructor(api) { this.api = api; }
@@ -54,7 +54,8 @@ export class ChromeAccounts {
       accounts: site.accounts.map(({ id, name, savedAt, cookies }) => ({ id, name, savedAt, count: cookies.length })) };
   }
   async handle(message) {
-    const { domain, url } = siteFromInput(message.site || 'dola.com');
+    const { domain, url: siteUrl } = message.action === 'list' && !message.site ? { domain: null, url: null } : siteFromInput(message.site);
+    const url = domain === 'google.com' ? 'https://mail.google.com/' : siteUrl;
     const state = await this.load();
     if (message.action === 'list') return this.metadata(state, domain);
     if (state.pending && message.action !== 'recover') throw new Error(`An interrupted switch for ${state.pending.domain} needs recovery first.`);
@@ -82,6 +83,7 @@ export class ChromeAccounts {
     await this.checkPermission(domain);
     for (const existing of Object.keys(state.sites)) {
       if (existing !== domain && (inScope(existing, domain) || inScope(domain, existing))) {
+        if (domain === 'google.com') throw new Error(`Remove the old ${existing} website entry first, then save your Google accounts again under google.com. Its saved cookies cover only part of the Google login. Removing the entry keeps your current website login.`);
         throw new Error(`This website overlaps ${existing}. Use that saved website address instead.`);
       }
     }
@@ -129,6 +131,7 @@ export class ChromeAccounts {
     const name = message.action === 'new' ? accountName(message.name) : null;
     if (name && site.accounts.some(a => a.name.toLowerCase() === name.toLowerCase())) throw new Error('Choose a different account name.');
     const tabs = message.refreshTabs ? await siteTabs(this.api, domain) : [];
+    const destinationTabs = switchedTabs(tabs, domain);
     if (!message.refreshTabs) await this.requireClosed(domain);
     let before = await this.readCookies(domain);
     const pauseUrl = tabs.length ? this.api.runtime.getURL(`switching.html#${crypto.randomUUID()}`) : null;
@@ -156,7 +159,7 @@ export class ChromeAccounts {
       mutated = true;
       await this.replaceCookies(domain, next.cookies);
       nextSite.active = next.id;
-      nextState.pending = tabs.length ? { ...state.pending, phase: 'resume' } : null;
+      nextState.pending = tabs.length ? { ...state.pending, tabs: destinationTabs, phase: 'resume' } : null;
       await this.persist(nextState);
     } catch {
       try {
@@ -171,11 +174,11 @@ export class ChromeAccounts {
     }
     if (tabs.length) {
       try {
-        await resumeTabs(this.api, tabs, pauseUrl);
+        await resumeTabs(this.api, destinationTabs, pauseUrl);
         nextState.pending = null;
         await this.persist(nextState);
       } catch {
-        nextState.pending = { domain, before, tabs, pauseUrl, phase: 'resume' };
+        nextState.pending = { domain, before, tabs: destinationTabs, pauseUrl, phase: 'resume' };
         const result = this.metadata(nextState, domain);
         result.notice = 'Account switched. Some tabs could not refresh; use Recover previous session to resume them.';
         return result;

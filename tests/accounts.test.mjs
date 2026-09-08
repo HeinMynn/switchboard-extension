@@ -45,6 +45,36 @@ function fixture(initial = [cookie()]) {
 }
 const msg = (action, extra = {}) => ({ action, site: 'dola.com', ...extra });
 
+test('Google switching includes parent login cookies and accounts host cookies', async () => {
+  const googleCookies = value => [cookie(value, { domain: '.google.com' }),
+    cookie(value, { domain: 'accounts.google.com', hostOnly: true })];
+  const f = fixture(googleCookies('Personal'));
+  const personal = await f.engine.handle({ action: 'save', site: 'google.com', name: 'Personal' });
+  assert.equal(personal.accounts[0].count, 2);
+  await f.engine.handle({ action: 'new', site: 'google.com', name: 'Work' });
+  f.setJar(googleCookies('Work'));
+  await f.engine.handle({ action: 'save', site: 'google.com' });
+  f.control.tabs = [{ id: 1, url: 'https://mail.google.com/mail/u/1/?authuser=old%40example.com#inbox' }];
+  await f.engine.handle({ action: 'switch', site: 'google.com', id: personal.accounts[0].id, refreshTabs: true });
+  assert.deepEqual(f.jar().map(c => c.value), ['Personal', 'Personal']);
+  assert.equal(f.control.tabs[0].url, 'https://mail.google.com/');
+  await f.engine.handle({ action: 'open', site: 'google.com' });
+  assert.equal(f.control.opened.at(-1).url, 'https://mail.google.com/');
+});
+
+test('failed Google switch preserves the original Gmail account URL', async () => {
+  const f = fixture([cookie('Personal', { domain: '.google.com' })]);
+  const personal = await f.engine.handle({ action: 'save', site: 'google.com', name: 'Personal' });
+  await f.engine.handle({ action: 'new', site: 'google.com', name: 'Work' });
+  f.setJar([cookie('Work', { domain: '.google.com' })]);
+  const url = 'https://mail.google.com/mail/u/1/#inbox';
+  f.control.tabs = [{ id: 1, url }];
+  f.control.failValue = 'Personal';
+  await assert.rejects(f.engine.handle({ action: 'switch', site: 'google.com', id: personal.active, refreshTabs: true }), /Previous cookies were restored/);
+  assert.equal(f.control.tabs[0].url, url);
+  assert.equal(f.jar()[0].value, 'Work');
+});
+
 test('website scope excludes lookalike domains and unrelated domains', () => {
   assert.equal(siteFromInput('https://www.dola.com/chat/').domain, 'dola.com');
   assert.equal(inScope('.login.dola.com', 'dola.com'), true);
