@@ -2,7 +2,7 @@ import { mkdir, cp, writeFile } from 'node:fs/promises';
 import { createIcons } from './icons.mjs';
 const icons = Object.fromEntries([16, 32, 48, 128].map(size => [size, `icons/icon-${size}.png`]));
 const common = {
-  manifest_version: 3, name: 'Switchboard', version: '1.0.0',
+  manifest_version: 3, name: 'Switchboard', version: '1.0.1',
   description: 'A privacy-first, 100% local session manager. Seamlessly save, switch, and manage multiple accounts for any website in one browser.',
   icons,
   action: { default_popup: 'popup.html', default_title: 'Switchboard', default_icon: icons },
