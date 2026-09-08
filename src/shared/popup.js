@@ -196,7 +196,21 @@ function updateConnectHint() {
   return !unsupported;
 }
 $('site').addEventListener('input', updateConnectHint);
-$('change-site').addEventListener('click', () => { $('site-form').hidden = !$('site-form').hidden; if (!$('site-form').hidden) { $('site').value = detectedSite || selectedSite || ''; updateConnectHint(); $('site').focus(); $('site').select(); } });
+$('change-site').addEventListener('click', () => { 
+  $('site-form').hidden = !$('site-form').hidden; 
+  $('remove-site').hidden = !$('site-form').hidden || !selectedSite;
+  if (!$('site-form').hidden) { 
+    $('site').value = detectedSite || selectedSite || ''; 
+    updateConnectHint(); 
+    $('site').focus(); 
+    $('site').select(); 
+  } 
+});
+$('cancel-site').addEventListener('click', () => { 
+  $('site-form').hidden = true; 
+  $('remove-site').hidden = !selectedSite;
+  $('change-site').focus(); 
+});
 $('site-form').addEventListener('submit', event => {
   event.preventDefault(); if (busy) return;
   if (!updateConnectHint()) return;
