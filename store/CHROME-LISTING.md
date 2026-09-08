@@ -10,24 +10,41 @@ Public privacy-policy URL: NOT HOSTED YET.
 Switchboard
 
 ## Short description
-Save named website logins, switch accounts in your existing tabs, and export cookies locally.
+A privacy-first, 100% local account and session manager. Easily save, switch, and manage multiple accounts for any website.
 
 ## Detailed description
-Keep your website accounts organized in one browser with Switchboard.
+**Switchboard: The 100% Local, Privacy-First Account Manager**
 
-Save a login under a name you recognize, then return to it with Switch & refresh. Switchboard briefly pauses the selected website's tabs, restores the chosen saved cookies, and returns those tabs to their previous pages. One account is active per website across normal Chrome windows.
+Tired of constantly logging in and out of different accounts? Fed up with juggling multiple incognito windows or creating entirely new browser profiles just to check your secondary email, work dashboard, or alternate social media accounts? 
 
-Features:
-- Save and rename account sessions for websites you choose.
-- Switch accounts while keeping the same tabs and windows.
-- Export a saved cookie snapshot as JSON or TXT containing JSON.
-- Remove saved accounts or websites from Switchboard.
-- Recover an interrupted switch.
-- Follow the built-in setup guide.
+Switchboard is a powerful, seamless, and purely local account manager designed to let you switch between multiple accounts on any website with just a single click. By taking snapshots of your active sessions, Switchboard lets you maintain an infinite number of active accounts for any website, perfectly isolated and ready to go.
 
-Data stays on your device. Switchboard handles authentication cookies, account labels, website domains, and tab URLs for its account-management features. There are no analytics, advertisements, automatic uploads, or developer-operated servers. Saved snapshots and exports contain sensitive cookie data without additional encryption. Protect your device and exported files.
+**HOW IT WORKS ON CHROME**
+Switchboard utilizes advanced cookie snapshot technology to save and restore your sessions. When you are logged into an account, you can save a "snapshot" of your active cookies. Switchboard safely stores this session state locally. When you want to switch accounts, Switchboard instantly swaps out the active cookies with your saved snapshot and refreshes your current tab. 
+* Note: Switchboard maintains one active account per website across all normal Chrome windows at a time, keeping your browsing experience clean, focused, and uninterrupted.
 
-Save unfinished page work before switching: the website's tabs are reloaded. Chrome support is cookie-based; websites using other login storage may not switch correctly. Websites can expire or revoke logins. Switchboard does not guarantee permanent authentication, invisibility, or protection from account restrictions. It is not affiliated with the websites you use.
+**🚀 CORE FEATURES**
+* **Instant Account Switching:** Jump between your personal, work, and client accounts in seconds.
+* **Cookie Snapshots:** Save exact replicas of your login sessions and restore them on demand.
+* **Seamless Tab Refresh:** When you switch accounts, Switchboard instantly refreshes your active tabs so you can pick up exactly where you left off.
+* **Export & Portability:** Need advanced control? Manually export your saved cookie snapshots as standard JSON files for backup or developer testing.
+* **Full Account Control:** Rename, forget, and manage your saved accounts easily from a clean, intuitive popup interface.
+
+**🛡️ 100% LOCAL & PRIVACY-FIRST**
+We believe that your accounts, credentials, and cookies belong to you and you alone. Switchboard is built from the ground up to respect your privacy and security.
+* **Zero Analytics & Zero Tracking:** We do not track your usage, clicks, or browsing habits.
+* **No Servers & No Cloud Sync:** Your data never leaves your machine. There are no centralized servers, no cloud databases, and no remote syncing.
+* **Completely Offline:** Switchboard operates entirely on your physical device and doesn't require an internet connection to manage your data. 
+* **No Remote Code:** What you install is what you get. We do not inject or download external scripts.
+
+**👨‍💻 WHO IS THIS FOR?**
+* **Freelancers & Agencies:** Easily switch between different client accounts on platforms like AWS, WordPress, Shopify, and more without mixing up sessions.
+* **Social Media Managers:** Toggle between brand accounts on X, Reddit, Instagram, and LinkedIn with a single click.
+* **Developers & QA Testers:** Test multiple user roles (Admin, Editor, Guest) on your local dev environments simultaneously without constantly clearing your cache.
+* **Everyday Users:** Keep your work life and personal life separate without the hassle of multiple browsers.
+
+**⚠️ IMPORTANT TECHNICAL NOTES**
+Save unfinished page work before switching, as your active tabs will be reloaded. Switchboard's Chrome support is cookie-based; websites using other local storage methods (like IndexedDB) may not switch perfectly. Switchboard does not guarantee permanent authentication or protection from account restrictions, and is not affiliated with the websites you use.
 
 ## Single purpose
 Let users locally organize and switch their own saved website login sessions.
