@@ -7,12 +7,15 @@
   <section class="site-panel">
     <div class="section-heading" style="margin-top: 0; margin-bottom: 8px;">
       <label for="websites" style="margin: 0; letter-spacing: 1.2px; color: #647568; font-size: 9px;">WEBSITE</label>
-      <button id="change-site" class="quiet" style="padding: 3px 6px; font-weight: normal; font-size: 11px;">New</button>
+      <button id="change-site" style="display: flex; align-items: center; gap: 4px; padding: 3px 8px; font-weight: 600; font-size: 11px;">
+        <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+        New
+      </button>
     </div>
     <div id="site-selector-row" class="row">
       <select id="websites" aria-label="Saved websites"><option value="">No websites yet</option></select>
-      <button id="remove-site" class="quiet warning-text" title="Remove website" style="padding: 0 10px; height: 37px; display: grid; place-items: center;" aria-label="Remove website">
-        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"><path d="M5 12h14"></path></svg>
+      <button id="remove-site" class="warning-text" title="Remove website" style="padding: 0; width: 37px; height: 37px; display: grid; place-items: center; flex-shrink: 0;" aria-label="Remove website">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"><path d="M5 12h14"></path></svg>
       </button>
     </div>
     <form id="site-form" hidden style="margin-top: 0;">
