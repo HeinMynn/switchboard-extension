@@ -136,7 +136,7 @@ function renderAccounts() {
     });
     const exportActions = document.createElement('div'); exportActions.className = 'row'; exportActions.append(download, exportCancel);
     exportForm.append(exportNote, format, exportActions);
-    row.append(rename, exportButton, actionButton('Remove saved account', 'forget', a)); 
+    row.append(rename, exportButton, actionButton('Remove', 'forget', a)); 
     more.append(summary, row);
     if (!firefox && !a.count) more.append(exportWarning);
     more.append(form, exportForm);

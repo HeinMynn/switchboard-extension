@@ -7,12 +7,12 @@
   <section class="site-panel">
     <div class="section-heading" style="margin-top: 0; margin-bottom: 8px;">
       <label for="websites" style="margin: 0; letter-spacing: 1.2px; color: #647568; font-size: 9px;">WEBSITE</label>
-      <div style="display: flex; gap: 4px;">
-        <button id="change-site" class="quiet" style="padding: 3px 6px; font-weight: normal; font-size: 11px;">+ Add</button>
-        <button id="remove-site" class="quiet warning-text" style="padding: 3px 6px; font-weight: normal; font-size: 11px;">Remove</button>
-      </div>
+      <button id="change-site" class="quiet" style="padding: 3px 6px; font-weight: normal; font-size: 11px;">New</button>
     </div>
-    <select id="websites" aria-label="Saved websites"><option value="">No websites yet</option></select>
+    <div class="row">
+      <select id="websites" aria-label="Saved websites"><option value="">No websites yet</option></select>
+      <button id="remove-site" class="quiet warning-text" title="Remove website" style="padding: 0 12px; height: 37px; font-size: 18px; line-height: 1;" aria-label="Remove website">&minus;</button>
+    </div>
     <form id="site-form" hidden style="margin-top: 12px;">
       <label for="site">Website address</label>
       <div class="row">
