@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Switchboard · Backup & restore</title><link rel="icon" href="icons/icon-32.png"><link rel="stylesheet" href="backup.css"></head>
+<body><main>
+<header><a class="brand" href="#backup-form"><img src="icons/icon-48.png" width="36" height="36" alt="">Switchboard</a><span class="badge">Stored on your device</span></header>
+<div class="intro"><p class="eyebrow">YOUR DATA</p><h1>Backup & restore</h1><p>Keep a secure copy of your accounts, or bring them to another computer.</p></div>
+<nav aria-label="Backup and restore"><a id="backup-nav" href="#backup-form">Create a backup</a><a id="restore-nav" href="#decrypt-form">Restore a backup</a></nav>
+<div class="feedback"><p id="status" role="status" aria-live="polite"></p><progress id="progress" aria-label="Working" hidden></progress></div>
+<section id="backup-panel" class="layout"><aside><span class="step">ENCRYPT & DOWNLOAD</span><h2>A copy you control.</h2><p>Your websites, saved accounts, and cookies are protected with a password before the file is downloaded.</p><div class="summary" id="current-summary">Loading your accounts…</div><p class="hint" id="backup-note"></p></aside>
+<div class="card"><h3>Protect your backup</h3><p class="hint">Choose a password you can keep safe. Switchboard cannot recover it.</p>
+<form id="backup-form"><label for="backup-password">Create a password</label><input id="backup-password" type="password" autocomplete="new-password" minlength="12" aria-describedby="password-hint" required><p class="hint" id="password-hint">At least 12 characters. A long, unique phrase works well.</p>
+<label for="backup-confirm">Confirm password</label><input id="backup-confirm" type="password" autocomplete="new-password" minlength="12" required>
+<label class="check"><input id="show-passwords" type="checkbox">Show passwords</label>
+<button class="primary wide" type="submit">Download encrypted backup</button><p class="footnote">Downloads a .swb file. Keep this page open until it starts.</p></form></div></section>
+<section id="restore-panel" class="layout" hidden><aside><span class="step">CHOOSE → UNLOCK → RESTORE</span><h2>Bring your accounts back.</h2><p>Choose a Switchboard backup and enter its password. You can review what is inside before restoring.</p><p id="restore-note" class="summary"></p><p class="hint">Use a backup from the same browser type: Chrome to Chrome, or Firefox to Firefox.</p></aside>
+<div class="card"><form id="decrypt-form"><h3>1. Choose your backup</h3><label class="file-label" for="backup-file">Switchboard backup file (.swb)</label><input id="backup-file" type="file" accept=".swb" required>
+<div id="unlock-fields" hidden><h3 class="next-step">2. Unlock the file</h3><label for="restore-password">Backup password</label><input id="restore-password" type="password" autocomplete="current-password" required><button class="primary wide" type="submit">Unlock & review</button></div></form>
+<div id="restore-review" hidden tabindex="-1"><h3 class="next-step">3. Review and restore</h3><p id="restore-summary" class="summary"></p><p class="warning">Restoring a backup will overwrite your current Switchboard configuration.</p><label class="check"><input id="overwrite" type="checkbox">I understand that this replaces my Switchboard configuration.</label><div class="actions"><button class="primary" id="restore-all" disabled>Restore accounts</button><button class="secondary" id="cancel-restore">Cancel</button></div></div></div></section>
+<section id="recovery-panel" class="recovery" hidden><h3>Finish recovering your previous configuration</h3><p>A restore was interrupted. Close the affected website tabs, then recover before continuing.</p><button class="secondary" id="recover-restore" type="button">Recover restore</button></section>
+<footer>Backups include cookies, not other website storage. Websites can still expire or revoke logins.</footer>
+</main><script type="module" src="backup-ui.js"></script></body></html>

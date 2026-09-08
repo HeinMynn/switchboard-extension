@@ -38,6 +38,16 @@ A privacy-first extension for **Chrome and Firefox** to seamlessly manage and sw
 2. **Chrome:** Sign in normally, open the popup, and click **Add account** -> **Save account**. To add a second account, click **Add account** -> **Create & open**, sign in, and click **Save login**. Use **Switch & refresh** to swap between them.
 3. **Firefox:** Click **Add account**, enter a name, and click **Create & open**. Sign in within the new color-coded container tab. Repeat for additional accounts. Use the **Open** button to launch a specific account's container.
 
+## Encrypted backups
+
+Use **Backup Data** or **Restore Data** in the popup to open the backup page. Choose and confirm a password of at least 12 characters, then download a `switchboard-backup-YYYY-MM-DD.swb` file. Native Web Crypto uses AES-256-GCM and PBKDF2-SHA-256 with 600,000 iterations, a fresh 16-byte salt, and a fresh 12-byte IV. No encryption libraries or uploads are used. Lost passwords cannot be recovered.
+
+Chrome backups contain all saved account snapshots plus current cookies for connected websites. Firefox backups contain every saved container's cookies, including external sign-in providers, and request website access to collect them. Normal Firefox tabs are excluded. Other website storage, such as localStorage and IndexedDB, is not included.
+
+To restore, choose the file, unlock it, review the websites, confirm the overwrite, and allow access. Use the same browser type as the backup; cross-browser conversion is not supported. Close affected Chrome tabs first. Chrome restores live cookies and keeps saved snapshots separately. Firefox creates new containers and remaps cookies to their IDs; old containers remain untouched. Unrelated extension settings and unrelated websites' cookies are preserved.
+
+If restoration is interrupted, open the backup page, close affected Chrome tabs, and use **Recover restore**. Normal account operations are blocked while a restore journal remains. Backups cannot prevent website session expiry or revocation. Native browser prompts and real cross-device login validity require manual verification.
+
 ## Privacy & Security Safeguards
 - **Strict Permissions:** Chrome requests website access only when you connect a website. Firefox requests optional access only during explicit cookie exports.
 - **No Cloud Sync:** Chrome snapshots store sensitive cookie values locally (`storage.local`) unencrypted. Firefox stores only labels and container IDs. None of this is synced, uploaded, or accessible to content scripts.

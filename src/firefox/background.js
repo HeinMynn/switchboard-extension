@@ -2,9 +2,14 @@ import { siteFromInput, accountName, origins } from './core.js';
 import { cookieExport } from './export.js';
 import { registerWelcome } from './onboarding.js';
 import { isGoogleSite, unsupportedGoogleMessage } from './google-site.js';
+import { gatherBackup, restoreBackup, recoverBackup } from './backup-state.js';
 registerWelcome(browser);
 let queue = Promise.resolve();
 async function handle(message) {
+  if (message.action === 'backup-recover') return recoverBackup(browser, 'firefox');
+  if ((await browser.storage.local.get('backupRestoreJournal')).backupRestoreJournal) throw new Error('Recover the interrupted restore from Backup Data before continuing.');
+  if (message.action === 'backup-export') return gatherBackup(browser, 'firefox');
+  if (message.action === 'backup-restore') return restoreBackup(browser, 'firefox', message.payload);
   const { domain, url } = message.action === 'list' && !message.site ? { domain: null, url: null } : siteFromInput(message.site);
   const { pockets = [], connectedSites = [] } = await browser.storage.local.get(['pockets', 'connectedSites']);
   let sites = [...new Set([...connectedSites, ...pockets.map(p => p.domain)])].sort();
@@ -64,7 +69,8 @@ async function handle(message) {
   return { mode: 'firefox', domain, sites: [...new Set([...sites, ...accounts.map(a => a.domain)])].sort(), accounts: accounts.filter(a => a.domain === domain), active: null, pending: null };
 }
 browser.runtime.onMessage.addListener((message, sender) => {
-  if (sender.id !== browser.runtime.id || sender.url !== browser.runtime.getURL('popup.html')) return;
+  const backupPage = sender.url?.split('#')[0] === browser.runtime.getURL('backup.html');
+  if (sender.id !== browser.runtime.id || (backupPage ? !['backup-export', 'backup-restore', 'backup-recover'].includes(message.action) : sender.url !== browser.runtime.getURL('popup.html') || message.action.startsWith('backup-'))) return;
   const task = queue.then(() => handle(message));
   queue = task.catch(() => {});
   return task.then(data => ({ ok: true, data }), error => ({ ok: false, error: error.message }));

@@ -10,6 +10,7 @@ export async function prepareConnection(api, input) {
 }
 
 export async function finishConnection(api) {
+  if ((await api.storage.local.get('backupRestoreJournal')).backupRestoreJournal) return;
   const { pendingConnection: domain } = await api.storage.local.get('pendingConnection');
   if (domain && isGoogleSite(domain)) {
     await api.storage.local.set({ pendingConnection: null });

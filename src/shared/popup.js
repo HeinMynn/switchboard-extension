@@ -4,6 +4,9 @@ import { chromeConnectionSite, isGoogleSite, unsupportedGoogleMessage } from './
 const api = globalThis.browser || chrome;
 const firefox = Boolean(globalThis.browser?.contextualIdentities);
 const $ = id => document.getElementById(id);
+for (const [id, section] of [['backup-data', 'backup-form'], ['restore-data', 'decrypt-form']]) {
+  $(id).addEventListener('click', () => api.tabs.create({ url: api.runtime.getURL(`backup.html#${section}`) }));
+}
 let selectedSite = null;
 let detectedSite = null;
 let current = { accounts: [] };

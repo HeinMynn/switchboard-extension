@@ -2,6 +2,16 @@
 
 Changes to Switchboard are listed here, newest first. Earlier entries summarize the version history recorded in the README; they do not imply a published store release or Git tag.
 
+## 1.0.0 — 2026-09-08
+
+- Add **Backup Data** and **Restore Data** with password-encrypted `.swb` files using native Web Crypto, PBKDF2-SHA-256 (600,000 iterations), and AES-256-GCM.
+- Back up Chrome's saved cookie snapshots and current cookies separately. Back up all cookies in saved Firefox containers, including external sign-in providers.
+- Validate decrypted backups before mutation, remap Firefox accounts into new containers, and journal restores for rollback and recovery.
+- Require explicit overwrite confirmation and website permissions before restore. Chrome requires affected tabs to be closed. Restore supports the same browser type across devices; it does not copy other website storage or guarantee valid logins.
+
+- Redesign backup and restore with separate views, account counts, password visibility controls, and a guided review step.
+- Add a welcome-page restore shortcut for users who already have a backup.
+
 ## 0.6.0 — 2026-09-08
 
 ### Added
