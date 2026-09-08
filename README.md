@@ -22,14 +22,14 @@ A privacy-first extension for **Chrome and Firefox** to seamlessly manage and sw
 ## Installation
 
 ### Chrome (Manual Unpacked)
-1. Download or build the `dist/chrome` folder.
+1. [Download the latest release ZIP](https://github.com/HeinMynn/switchboard-extension/releases/latest) and extract the `dist/chrome` folder (or build it from source).
 2. Open `chrome://extensions`, enable **Developer mode**, and click **Load unpacked**.
-3. Select the `dist/chrome` folder.
+3. Select the extracted `dist/chrome` folder.
 4. Pin Switchboard to your toolbar.
 
 ### Firefox (Temporary Add-on)
 *Note: Temporary add-ons are removed when Firefox restarts. A signed add-on is required for permanent installation.*
-1. Download or build the `dist/firefox` folder.
+1. [Download the latest release ZIP](https://github.com/HeinMynn/switchboard-extension/releases/latest) and extract the `dist/firefox` folder (or build it from source).
 2. Open `about:debugging#/runtime/this-firefox` and click **Load Temporary Add-on**.
 3. Select `dist/firefox/manifest.json`.
 
