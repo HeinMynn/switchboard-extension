@@ -22,7 +22,7 @@ for (const browser of ['chrome', 'firefox']) {
     ...common, permissions: ['storage', 'cookies', 'contextualIdentities', 'activeTab'],
     optional_host_permissions: ['http://*/*', 'https://*/*'],
     background: { scripts: ['background.js'], type: 'module' },
-    browser_specific_settings: { gecko: { id: 'switchboard@local.invalid', strict_min_version: '140.0',
+    browser_specific_settings: { gecko: { id: 'switchboard@aungheinmynn.dev', strict_min_version: '140.0',
       data_collection_permissions: { required: ['none'] } } }
   };
   await writeFile(`${dir}/manifest.json`, JSON.stringify(manifest, null, 2) + '\n');
